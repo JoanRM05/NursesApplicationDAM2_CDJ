@@ -8,6 +8,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,4 +42,24 @@ public class NurseController {
 		
 	}
 	
-}
+		@GetMapping("/name")
+		public ResponseEntity<Nurse> findByName(@RequestParam String name) {
+			try {
+				ObjectMapper mapper = new ObjectMapper();
+				JsonNode root = mapper.readTree(
+						 new ClassPathResource("static/nurses.json").getInputStream()
+			     );
+				 ArrayList<Nurse> nurses = mapper.convertValue(root.get("nurses"), new TypeReference<ArrayList<Nurse>>() {});
+				
+				for (Nurse nurse : nurses) {
+					if(nurse.getName().equals(name)) {
+						return ResponseEntity.ok(nurse);
+					}
+				}
+			} catch (Exception e) {
+				return ResponseEntity.notFound().build();
+			}
+			return ResponseEntity.notFound().build();
+		}
+	}
+	

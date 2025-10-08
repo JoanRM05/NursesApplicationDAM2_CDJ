@@ -97,7 +97,7 @@ public class NurseController {
 
 	    			   for(int i=0;i<arraynurse.size();i++) {
 	    				   
-	    				   JSONObject seachjson=(JSONObject) arraynurse.get(i);/
+	    				   JSONObject seachjson=(JSONObject) arraynurse.get(i);
 	  				  
 	    				   String pass= (String) seachjson.get("pass");
 	    				   String user= (String) seachjson.get("user");

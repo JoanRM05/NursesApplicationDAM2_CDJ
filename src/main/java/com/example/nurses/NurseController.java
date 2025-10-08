@@ -86,9 +86,9 @@ public class NurseController {
 	    			
 	    			FileReader reader = new FileReader(rutaProyecto+fs+"src"+fs+"main"+fs+"resources"+fs+ "static"+fs+"nurses.json");
 	    		
-	    		    Object obj=jsonparser.parse(reader);//Lee el contenido JSON desde el json y lo convierte en objeto
+	    		    Object obj=jsonparser.parse(reader);
 	    		
-	    		    JSONObject empjsonobj=(JSONObject)obj;//Se hace un cast del Object a JSONObject
+	    		    JSONObject empjsonobj=(JSONObject)obj;
 	    		
 	    		    JSONArray arraynurse=(JSONArray)empjsonobj.get("nurses");
 	    		   
@@ -97,13 +97,12 @@ public class NurseController {
 
 	    			   for(int i=0;i<arraynurse.size();i++) {
 	    				   
-	    				   JSONObject seachjson=(JSONObject) arraynurse.get(i);//Accede a la posicion i del JSON
-	    				
-	    				   String name = (String) seachjson.get("name");
+	    				   JSONObject seachjson=(JSONObject) arraynurse.get(i);/
+	  				  
 	    				   String pass= (String) seachjson.get("pass");
 	    				   String user= (String) seachjson.get("user");
 	    				
-	    				   if(name.equals(nurse.getName()) && user.equals(nurse.getUser()) && pass.equals(nurse.getPass())){
+	    				   if(user.equals(nurse.getUser()) && pass.equals(nurse.getPass())){
 	    			        	return ResponseEntity.ok(true);
 	    				}			 					
 	    			}

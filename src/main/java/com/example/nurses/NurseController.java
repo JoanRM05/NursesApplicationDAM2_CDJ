@@ -79,8 +79,7 @@ public class NurseController {
 	    		String rutaProyecto= System.getProperty("user.dir");
 	    		String fs = File.separator;
 	    		
-	    		
-	    		System.out.print("Ha entrado:"+ rutaProyecto);
+	    	
 	    		
 	    		try {
 	    			

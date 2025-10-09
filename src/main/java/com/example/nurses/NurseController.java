@@ -80,8 +80,6 @@ public class NurseController {
 	    		String fs = File.separator;
 	    		
 	    		
-	    		System.out.print("Ha entrado:"+ rutaProyecto);
-	    		
 	    		try {
 	    			
 	    			FileReader reader = new FileReader(rutaProyecto+fs+"src"+fs+"main"+fs+"resources"+fs+ "static"+fs+"nurses.json");

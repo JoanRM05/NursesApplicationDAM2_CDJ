@@ -1,6 +1,4 @@
-package com.example.nurses;
-
-
+package com.example.nurses.Controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.nurses.Entity.Nurse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

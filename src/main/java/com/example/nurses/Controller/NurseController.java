@@ -2,6 +2,7 @@ package com.example.nurses.Controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.io.File;
 import java.io.FileReader;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.Login_RA_02.dao.NurseRepository;
+import com.example.nurses.Repository.NurseRepository;
 import com.example.nurses.Entity.Nurse;
 import com.example.nurses.Repository.NurseRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -36,46 +37,34 @@ public class NurseController {
 	private NurseRepository nurseRepository;
 	
 	@GetMapping("/index")
-	public @ResponseBody ResponseEntity<ArrayList<Nurse>> getAll() {
-		
-		ObjectMapper mapeador = new ObjectMapper();
-		
+	public @ResponseBody ResponseEntity<List<Nurse>> getAll() {
 		try {
-			
-			 JsonNode root = mapeador.readTree(
-					 new ClassPathResource("static/nurses.json").getInputStream()
-		     );
-			 
-			 ArrayList<Nurse> listNurses = mapeador.convertValue(root.get("nurses"), new TypeReference<ArrayList<Nurse>>() {});
-			 
-			 return ResponseEntity.ok(listNurses);
-			 
-		} catch (IOException e) {
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.ok(nurseRepository.findAll());
+		} catch (Exception e) {
+			return ResponseEntity.status(404).build();
 		}
-		
 	}
 	
-		@GetMapping("/name")
-		public ResponseEntity<Nurse> findByName(@RequestParam String name) {
-			Optional<Nurse> optionalNurse =  nurseRepository.findByName(name);
-			if(optionalNurse.isPresent()) {
-				return ResponseEntity.ok(optionalNurse.get());
-			}
-			else {
-				return ResponseEntity.notFound().build();
-			}
+	@GetMapping("/name")
+	public ResponseEntity<Nurse> findByName(@RequestParam String name) {
+		Optional<Nurse> optionalNurse =  nurseRepository.findByName(name);
+		if(optionalNurse.isPresent()) {
+			return ResponseEntity.ok(optionalNurse.get());
 		}
+		else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 		
 
-		 @PostMapping("/login")
-		 public ResponseEntity<Boolean>login(@RequestBody Nurse nurse) {
-			   boolean exists = nurseRepository.existsByUserAndPass( nurse.getUser(), nurse.getPass());
-			 	if(exists) {
-			 		return ResponseEntity.ok(true);
-			 	}else {
-			 		return ResponseEntity.ok(false);
-			 	}
-		 }
+	@PostMapping("/login")
+	public ResponseEntity<Boolean>login(@RequestBody Nurse nurse) {
+	  boolean exists = nurseRepository.existsByUserAndPass( nurse.getUser(), nurse.getPass());
+		if(exists) {
+		  return ResponseEntity.ok(true);
+		} else {
+		  return ResponseEntity.ok(false);
+		}
 	}
+}
 	

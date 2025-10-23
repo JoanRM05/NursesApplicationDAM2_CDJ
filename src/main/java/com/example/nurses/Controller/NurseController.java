@@ -2,14 +2,14 @@ package com.example.nurses.Controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.io.File;
 import java.io.FileReader;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.nurses.Repository.NurseRepository;
 import com.example.nurses.Entity.Nurse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -30,23 +31,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RequestMapping("/nurse")
 public class NurseController {
 	
+	@Autowired
+    private NurseRepository nurseRepository;
+	
 	@GetMapping("/index")
-	public @ResponseBody ResponseEntity<ArrayList<Nurse>> getAll() {
-		
-		ObjectMapper mapeador = new ObjectMapper();
+	public @ResponseBody ResponseEntity<List<Nurse>> getAll() {
 		
 		try {
-			
-			 JsonNode root = mapeador.readTree(
-					 new ClassPathResource("static/nurses.json").getInputStream()
-		     );
-			 
-			 ArrayList<Nurse> listNurses = mapeador.convertValue(root.get("nurses"), new TypeReference<ArrayList<Nurse>>() {});
-			 
-			 return ResponseEntity.ok(listNurses);
-			 
-		} catch (IOException e) {
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.ok(nurseRepository.findAll());
+		} catch (Exception e) {
+			return ResponseEntity.status(404).build();
 		}
 		
 	}

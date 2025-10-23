@@ -2,14 +2,14 @@ package com.example.nurses.Controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.io.File;
 import java.io.FileReader;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.nurses.Entity.Nurse;
+import com.example.nurses.Repository.NurseRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,6 +30,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RestController
 @RequestMapping("/nurse")
 public class NurseController {
+	
+	@Autowired
+	NurseRepository nurseRepository;
 	
 	@GetMapping("/index")
 	public @ResponseBody ResponseEntity<ArrayList<Nurse>> getAll() {
@@ -53,22 +57,13 @@ public class NurseController {
 	
 		@GetMapping("/name")
 		public ResponseEntity<Nurse> findByName(@RequestParam String name) {
-			try {
-				ObjectMapper mapper = new ObjectMapper();
-				JsonNode root = mapper.readTree(
-						 new ClassPathResource("static/nurses.json").getInputStream()
-			     );
-				 ArrayList<Nurse> nurses = mapper.convertValue(root.get("nurses"), new TypeReference<ArrayList<Nurse>>() {});
-				
-				for (Nurse nurse : nurses) {
-					if(nurse.getName().equals(name)) {
-						return ResponseEntity.ok(nurse);
-					}
-				}
-			} catch (Exception e) {
+			Optional<Nurse> optionalNurse =  nurseRepository.findByName(name);
+			if(optionalNurse.isPresent()) {
+				return ResponseEntity.ok(optionalNurse.get());
+			}
+			else {
 				return ResponseEntity.notFound().build();
 			}
-			return ResponseEntity.notFound().build();
 		}
 		
 		 @PostMapping("/login")

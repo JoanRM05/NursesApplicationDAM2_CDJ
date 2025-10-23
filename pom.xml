@@ -58,7 +58,7 @@
         </dependency>
         <dependency>
         	<groupId>com.example</groupId>
-        	<artifactId>individualnurses</artifactId>
+        	<artifactId>Login_RA_02</artifactId>
         	<version>0.0.1-SNAPSHOT</version>
         </dependency>
 	</dependencies>

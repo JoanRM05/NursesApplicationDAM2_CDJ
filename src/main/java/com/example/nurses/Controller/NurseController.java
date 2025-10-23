@@ -3,6 +3,7 @@ package com.example.nurses.Controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.io.File;
 import java.io.FileReader;
 import org.json.simple.JSONArray;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.nurses.Repository.NurseRepository;
 import com.example.nurses.Entity.Nurse;
+import com.example.nurses.Repository.NurseRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,80 +34,37 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class NurseController {
 	
 	@Autowired
-    private NurseRepository nurseRepository;
+	private NurseRepository nurseRepository;
 	
 	@GetMapping("/index")
 	public @ResponseBody ResponseEntity<List<Nurse>> getAll() {
-		
 		try {
 			return ResponseEntity.ok(nurseRepository.findAll());
 		} catch (Exception e) {
 			return ResponseEntity.status(404).build();
 		}
-		
 	}
 	
-		@GetMapping("/name")
-		public ResponseEntity<Nurse> findByName(@RequestParam String name) {
-			try {
-				ObjectMapper mapper = new ObjectMapper();
-				JsonNode root = mapper.readTree(
-						 new ClassPathResource("static/nurses.json").getInputStream()
-			     );
-				 ArrayList<Nurse> nurses = mapper.convertValue(root.get("nurses"), new TypeReference<ArrayList<Nurse>>() {});
-				
-				for (Nurse nurse : nurses) {
-					if(nurse.getName().equals(name)) {
-						return ResponseEntity.ok(nurse);
-					}
-				}
-			} catch (Exception e) {
-				return ResponseEntity.notFound().build();
-			}
+	@GetMapping("/name")
+	public ResponseEntity<Nurse> findByName(@RequestParam String name) {
+		Optional<Nurse> optionalNurse =  nurseRepository.findByName(name);
+		if(optionalNurse.isPresent()) {
+			return ResponseEntity.ok(optionalNurse.get());
+		}
+		else {
 			return ResponseEntity.notFound().build();
 		}
-		
-		 @PostMapping("/login")
-		 public ResponseEntity<Boolean>login(@RequestBody Nurse nurse) {
-	    	
-	    		JSONParser jsonparser= new JSONParser();
-	    		String rutaProyecto= System.getProperty("user.dir");
-	    		String fs = File.separator;
-	    		
-	    	
-	    		
-	    		try {
-	    			
-	    			FileReader reader = new FileReader(rutaProyecto+fs+"src"+fs+"main"+fs+"resources"+fs+ "static"+fs+"nurses.json");
-	    		
-	    		    Object obj=jsonparser.parse(reader);
-	    		
-	    		    JSONObject empjsonobj=(JSONObject)obj;
-	    		
-	    		    JSONArray arraynurse=(JSONArray)empjsonobj.get("nurses");
-	    		   
-	    		    
-	    		    if(arraynurse !=null) {
-
-	    			   for(int i=0;i<arraynurse.size();i++) {
-	    				   
-	    				   JSONObject seachjson=(JSONObject) arraynurse.get(i);
-	  				  
-	    				   String pass= (String) seachjson.get("pass");
-	    				   String user= (String) seachjson.get("user");
-	    				
-	    				   if(user.equals(nurse.getUser()) && pass.equals(nurse.getPass())){
-	    			        	return ResponseEntity.ok(true);
-	    				}			 					
-	    			}
-	    			   return ResponseEntity.ok(false);
-	    		    }
-	    		    
-	            }catch (IOException | ParseException e) {
-	                e.printStackTrace();             
-	            }	
-	    		 return ResponseEntity.notFound().build();
-	    }
-
 	}
+		
+
+	@PostMapping("/login")
+	public ResponseEntity<Boolean>login(@RequestBody Nurse nurse) {
+	  boolean exists = nurseRepository.existsByUserAndPass( nurse.getUser(), nurse.getPass());
+		if(exists) {
+		  return ResponseEntity.ok(true);
+		} else {
+		  return ResponseEntity.ok(false);
+		}
+	}
+}
 	

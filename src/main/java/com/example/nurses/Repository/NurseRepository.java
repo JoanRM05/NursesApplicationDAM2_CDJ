@@ -6,5 +6,6 @@ import com.example.nurses.Entity.Nurse;
 
 @Repository
 public interface NurseRepository extends JpaRepository<Nurse, Long> {
-
+	
+	 boolean existsByUserAndPass(String user,String pass);	
 }

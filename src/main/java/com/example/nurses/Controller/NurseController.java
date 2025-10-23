@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.Login_RA_02.dao.NurseRepository;
 import com.example.nurses.Entity.Nurse;
 import com.example.nurses.Repository.NurseRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -32,7 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class NurseController {
 	
 	@Autowired
-	NurseRepository nurseRepository;
+	private NurseRepository nurseRepository;
 	
 	@GetMapping("/index")
 	public @ResponseBody ResponseEntity<ArrayList<Nurse>> getAll() {
@@ -66,47 +67,15 @@ public class NurseController {
 			}
 		}
 		
+
 		 @PostMapping("/login")
 		 public ResponseEntity<Boolean>login(@RequestBody Nurse nurse) {
-	    	
-	    		JSONParser jsonparser= new JSONParser();
-	    		String rutaProyecto= System.getProperty("user.dir");
-	    		String fs = File.separator;
-	    		
-	    	
-	    		
-	    		try {
-	    			
-	    			FileReader reader = new FileReader(rutaProyecto+fs+"src"+fs+"main"+fs+"resources"+fs+ "static"+fs+"nurses.json");
-	    		
-	    		    Object obj=jsonparser.parse(reader);
-	    		
-	    		    JSONObject empjsonobj=(JSONObject)obj;
-	    		
-	    		    JSONArray arraynurse=(JSONArray)empjsonobj.get("nurses");
-	    		   
-	    		    
-	    		    if(arraynurse !=null) {
-
-	    			   for(int i=0;i<arraynurse.size();i++) {
-	    				   
-	    				   JSONObject seachjson=(JSONObject) arraynurse.get(i);
-	  				  
-	    				   String pass= (String) seachjson.get("pass");
-	    				   String user= (String) seachjson.get("user");
-	    				
-	    				   if(user.equals(nurse.getUser()) && pass.equals(nurse.getPass())){
-	    			        	return ResponseEntity.ok(true);
-	    				}			 					
-	    			}
-	    			   return ResponseEntity.ok(false);
-	    		    }
-	    		    
-	            }catch (IOException | ParseException e) {
-	                e.printStackTrace();             
-	            }	
-	    		 return ResponseEntity.notFound().build();
-	    }
-
+			   boolean exists = nurseRepository.existsByUserAndPass( nurse.getUser(), nurse.getPass());
+			 	if(exists) {
+			 		return ResponseEntity.ok(true);
+			 	}else {
+			 		return ResponseEntity.ok(false);
+			 	}
+		 }
 	}
 	

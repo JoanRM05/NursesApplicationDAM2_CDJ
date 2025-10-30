@@ -1,17 +1,11 @@
 package com.example.nurses.Controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
+
+
 import java.util.List;
 import java.util.Optional;
-import java.io.File;
-import java.io.FileReader;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,13 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.nurses.Repository.NurseRepository;
 import com.example.nurses.Entity.Nurse;
-import com.example.nurses.Repository.NurseRepository;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @RestController
@@ -55,7 +44,7 @@ public class NurseController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-		
+	
 
 	@PostMapping("/login")
 	public ResponseEntity<Boolean>login(@RequestBody Nurse nurse) {
@@ -64,6 +53,27 @@ public class NurseController {
 		  return ResponseEntity.ok(true);
 		} else {
 		  return ResponseEntity.ok(false);
+		}
+	}
+
+	@PostMapping()
+	public ResponseEntity<Nurse>createNurse(@RequestBody Nurse nurse) {
+		try {
+			 Nurse _nurse = nurseRepository.save(
+			            new Nurse(
+			                nurse.getName(),
+			                nurse.getSurname(),
+			                nurse.getEmail(),
+			                nurse.getUser(),
+			                nurse.getPass()
+			            )
+			        );
+			  return ResponseEntity.status(HttpStatus.CREATED).body(_nurse);
+		
+		
+		}catch(Exception e){
+			
+			return ResponseEntity.badRequest().build();
 		}
 	}
 }

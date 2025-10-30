@@ -56,7 +56,7 @@ public class NurseController {
 		}
 	}
 
-	@PostMapping("/create")
+	@PostMapping()
 	public ResponseEntity<Nurse>createNurse(@RequestBody Nurse nurse) {
 		try {
 			 Nurse _nurse = nurseRepository.save(

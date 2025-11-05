@@ -113,12 +113,6 @@ public class NurseController {
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteNurse(@PathVariable Long id) {
-		if (nurseRepository.existsById(id)) {
-			nurseRepository.deleteById(id);
-			return ResponseEntity.ok().build();
-		} else {
-			return ResponseEntity.notFound().build();
-		}
-	}
-
+		return ResponseEntity.ok().build();
+	}	
 }

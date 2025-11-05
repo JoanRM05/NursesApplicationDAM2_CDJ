@@ -1,8 +1,0 @@
-{
-	"nurses": [
-		{"name": "Pepe", "surname": "Gil", "user": "Pepegil10", "pass": "1234"},
-		{"name": "Cassius", "surname": "Tedesco", "user": "Cassiustedesco33", "pass": "123456"},
-		{"name": "Diana", "surname": "Cañas", "user": "Dianacañas23", "pass": "12345678"},
-		{"name": "Joan", "surname": "Rodrigues", "user": "Joanrodrigues24", "pass": "123456789"}
-	]
-}

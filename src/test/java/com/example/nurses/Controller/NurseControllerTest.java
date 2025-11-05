@@ -1,6 +1,7 @@
 package com.example.nurses.Controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -140,6 +141,13 @@ class NurseControllerTest {
     void shouldReturnNotFoundForUnknownName() throws Exception {
         mockMvc.perform(get("/nurse/name").param("name", "Desconocida"))
                 .andExpect(status().isNotFound());
+    }
+    
+    @Test
+    void shouldDeleteNurse() throws Exception {
+        mockMvc.perform(delete("/nurse/" + nurse.getId()))
+                .andExpect(status().isOk());
+        assertThat(nurseRepository.existsById(nurse.getId())).isFalse();
     }
 
 }

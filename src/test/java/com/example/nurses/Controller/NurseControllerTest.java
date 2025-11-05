@@ -150,4 +150,10 @@ class NurseControllerTest {
         assertThat(nurseRepository.existsById(nurse.getId())).isFalse();
     }
 
+    @Test
+    void shouldReturnNotFoundWhenDeletingUnknownNurse() throws Exception {
+        mockMvc.perform(delete("/nurse/999"))
+                .andExpect(status().isNotFound());
+    }
+
 }

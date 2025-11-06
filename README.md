@@ -1,4 +1,4 @@
-# 🏥 Nurses Management API
+# Nurses Management API
 
 A Spring Boot RESTful API designed to manage nurses information within a healthcare system.  
 This project provides endpoints for creating, reading, updating, deleting, and authenticating nurse records.  
@@ -6,12 +6,12 @@ It serves as a foundational backend for hospital management systems or any appli
 
 ---
 
-## 📋 Description
+##  Description
 
 The **Nurses Management API** allows CRUD operations and authentication for nurse entities.  
 It simplifies the management of healthcare personnel by providing structured REST endpoints for interaction with a nurses database.
 
-### 🩺 Main Features
+### Main Features
 - Create, read, update, and delete nurse records.
 - Authenticate users via username and password.
 - Search nurses by name or ID.
@@ -20,7 +20,7 @@ It simplifies the management of healthcare personnel by providing structured RES
 
 ---
 
-## ⚙️ Installation
+## Installation
 
 ### 1️⃣ Prerequisites
 Make sure you have installed:
@@ -53,11 +53,11 @@ http://localhost:8080
 
 ---
 
-## 🚀 Usage
+## Usage
 
 Below are examples of the main endpoints provided by the API.
 
-### ➕ Create a Nurse
+### Create a Nurse
 **POST** `/nurse`  
 **Body:**
 ```json
@@ -70,21 +70,21 @@ Below are examples of the main endpoints provided by the API.
 }
 ```
 
-### 🔍 Get All Nurses
+### Get All Nurses
 **GET** `/nurse/index`  
 Returns a list of all nurses in the database.
 
-### 🧑 Get Nurse by ID
+### Get Nurse by ID
 **GET** `/nurse/{id}`  
 Example:  
 ```
 /nurse/1
 ```
 
-### 🧾 Find Nurse by Name
+### Find Nurse by Name
 **GET** `/nurse/name?name=Luciana`
 
-### 🔐 Login
+### Login
 **POST** `/nurse/login`  
 **Body:**
 ```json
@@ -97,7 +97,7 @@ Example:
 - `true` → login successful  
 - `false` → invalid credentials  
 
-### ✏️ Update a Nurse
+### Update a Nurse
 **PUT** `/nurse/{id}`  
 **Body:**
 ```json
@@ -106,12 +106,12 @@ Example:
 }
 ```
 
-### ❌ Delete a Nurse
+### Delete a Nurse
 **DELETE** `/nurse/{id}`
 
 ---
 
-## 🧪 Testing
+## Testing
 
 The project includes unit and integration tests for all endpoints.  
 To run tests, execute:
@@ -121,7 +121,7 @@ mvn test
 
 ---
 
-## 🧰 Postman Collection
+## Postman Collection
 
 You can test the API using the Postman collection included in this repository.
 
@@ -130,13 +130,13 @@ You can test the API using the Postman collection included in this repository.
 
 ---
 
-## 🤖 Continuous Integration (CI)
+## Continuous Integration (CI)
 
 This project uses **GitHub Actions** for automatic build and test execution on every push or pull request to the `master` branch.  
 See the workflow file `.github/workflows/maven.yml` for details.
 
 ---
 
-## 👩‍💻 Author
-Developed by **Daiana Cañas Moya, Joan Rodrigues, Cassius Tedesco**
+## Author
+Developed by **Diana Cañas Moya, Joan Rodrigues, Cassius Tedesco**
 

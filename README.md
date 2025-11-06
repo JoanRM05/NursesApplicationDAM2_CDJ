@@ -30,7 +30,7 @@ Make sure you have installed:
 
 ### 2️⃣ Clone the Repository
 ```bash
-git clone https://github.com/<your-username>/nurses.git
+git clone https://github.com/JoanRM05/NursesApplicationDAM2_CDJ.git
 cd nurses
 ```
 
